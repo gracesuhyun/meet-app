@@ -2,12 +2,39 @@ import { mockData } from './mock-data';
 import axios from 'axios';
 import NProgress from 'nprogress';
 
-/**
- * 
- * @param {*} events:
- */
+//events.map not working???
+const extractLocations = (events) => {
+  var extractLocations = events.map((event) => event.location);
+  var locations = [...new Set(extractLocations)];
+  return locations;
+};
 
- const removeQuery = () => {
+const getToken = async (code) => {
+  const encodeCode = encodeURIComponent(code);
+  const { access_token } = await fetch(
+    `https://z3nxzdm1nh.execute-api.us-east-1.amazonaws.com/dev/api/token/${encodeCode}`
+  )
+    .then((res) => {
+      return res.json();
+    })
+    .catch((error) => error);
+
+  access_token && localStorage.setItem('access_token', access_token);
+
+  return access_token;
+};
+
+const checkToken = async (accessToken) => {
+  const result = await fetch(
+    `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
+  )
+    .then((res) => res.json())
+    .catch((error) => error.json());
+
+    return result.error ? false : true;
+};
+
+const removeQuery = () => {
   if (window.history.pushState && window.location.pathname) {
     var newurl =
       window.location.protocol +
@@ -21,28 +48,12 @@ import NProgress from 'nprogress';
   }
 };
 
-const checkToken = async (accessToken) => {
-  const result = await fetch(
-    `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
-  )
-    .then((res) => res.json())
-    .catch((error) => error.json());
-
-    return result.error ? false : true;
-};
-
-const extractLocations = (events) => {
-  var extractLocations = events.map((event) => event.location);
-  var locations = [...new Set(extractLocations)];
-  return locations;
-};
-
 const getEvents = async () => {
   NProgress.start();
 
   if (window.location.href.startsWith('http://localhost')) {
     NProgress.done();
-    return { events: mockData, locations: extractLocations(mockData) };
+    return mockData;
   }
 
   const token = await getAccessToken();
@@ -56,7 +67,7 @@ const getEvents = async () => {
       localStorage.setItem('locations', JSON.stringify(locations));
     }
     NProgress.done();
-    return { events: result.data.events, locations };
+    return result.data.events;
   }
 };
 
@@ -79,20 +90,5 @@ const getAccessToken = async () => {
   }
   return accessToken;
 }
-
-const getToken = async (code) => {
-  const encodeCode = encodeURIComponent(code);
-  const { access_token } = await fetch(
-    `https://z3nxzdm1nh.execute-api.us-east-1.amazonaws.com/dev/api/token/${encodeCode}`
-  )
-    .then((res) => {
-      return res.json();
-    })
-    .catch((error) => error);
-
-  access_token && localStorage.setItem('access_token', access_token);
-
-  return access_token;
-};
 
 export { getEvents, getAccessToken, extractLocations, getToken, checkToken  };

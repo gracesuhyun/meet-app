@@ -21,7 +21,7 @@ class Event extends Component {
       <div className="event">
         <div className="event-summary">
           <h2>{event.summary}</h2>
-          <p>{event.start.dateTime}</p>
+          <p>{event.start.dateTime.slice(0,10)}</p>
           <p>{event.start.timeZone}</p>
           <p>@{event.summary} | {event.location}</p>
           {!showDetails && (
