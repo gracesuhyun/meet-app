@@ -12,11 +12,7 @@ describe('<NumberOfEvents /> component', () => {
     expect(NumberOfEventsWrapper).toHaveLength(1);
   });
 
-  test('render the textbox to specify number of events', () => {
-    expect(NumberOfEventsWrapper.find('.number-of-events')).toHaveLength(1);
-  });
-
-  test('render label to specify number of events', () => {
+  test('render the textbox label for number of events', () => {
     expect(NumberOfEventsWrapper.find('.number-of-events label')).toHaveLength(1);
   })
 
@@ -30,6 +26,9 @@ describe('<NumberOfEvents /> component', () => {
   });
 
   test('change state when input number changes', () => {
+    NumberOfEventsWrapper.setState({
+      numberOfEvents: "20",
+    });
     const eventObject = { target: { value: '10' } };
     NumberOfEventsWrapper.find('.number-of-events input').simulate('change', eventObject);
     expect(NumberOfEventsWrapper.state('numberOfEvents')).toBe('10');

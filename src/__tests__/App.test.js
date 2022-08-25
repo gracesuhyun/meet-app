@@ -28,7 +28,7 @@ describe('<App /> component', () => {
   })
 });
 
-
+//error lines 32 to 38??
 describe('<App /> integration', () => {
   test('App passes "events" state as a prop to EventList', () => {
     const AppWrapper = mount(<App />);
@@ -69,4 +69,23 @@ describe('<App /> integration', () => {
     expect(AppWrapper.state('events')).toEqual(allEvents);
     AppWrapper.unmount();
   });
+
+  test("render correct list of events", () => {
+    const AppWrapper = mount(<App />);
+    AppWrapper.setState({
+      events: mockData,
+    });
+    expect(AppWrapper.find(".event")).toHaveLength(mockData.length);
+    AppWrapper.unmount();
+  });
+
+  test('update list of events to match new input of number of events', async () => {
+    const AppWrapper = mount(<App />);
+    const NumberOfEventsWrapper = AppWrapper.find(NumberOfEvents);
+    const number = Math.floor(Math.random() * (32));
+    const eventObject = { target: { value: number } };
+    await NumberOfEventsWrapper.find('.number-of-events input').simulate('change', eventObject);
+    expect(AppWrapper.state('numberOfEvents')).toEqual(number);
+    AppWrapper.unmount();
+});
 });
