@@ -11,8 +11,13 @@ import { extractLocations, getEvents } from '../api';
 
 describe('<App /> component', () => {
   let AppWrapper;
+
   beforeAll(() => {
     AppWrapper = shallow(<App />);
+  });
+
+  afterAll(() => {
+    AppWrapper.unmount();
   });
 
   test('render list of events', () => {
@@ -82,7 +87,7 @@ describe('<App /> integration', () => {
   test('update list of events to match new input of number of events', async () => {
     const AppWrapper = mount(<App />);
     const NumberOfEventsWrapper = AppWrapper.find(NumberOfEvents);
-    const number = Math.floor(Math.random() * (32));
+    const number = Math.floor(Math.random() * (20));
     const eventObject = { target: { value: number } };
     await NumberOfEventsWrapper.find('.number-of-events input').simulate('change', eventObject);
     expect(AppWrapper.state('numberOfEvents')).toEqual(number);
