@@ -8,18 +8,19 @@ class CitySearch extends Component {
   }
 
   handleInputChanged = (event) => {
+    const value = event.target.value;
     this.setState( { showSuggestions: true } );
       const suggestions = this.props.locations.filter((location) => {
-      return location.toUpperCase().indexOf(event.target.value.toUpperCase()) > -1;
+      return location.toUpperCase().indexOf(value.toUpperCase()) > -1;
     });
     if (suggestions.length === 0) {
       this.setState({
-        query: event.target.value,
-        infoText: 'We can not find the city you are looking for. Please try another city',
+        query: value,
+        infoText: 'There are no available events in the city you are looking for.',
       });
     } else {
       return this.setState({
-        query: event.target.value,
+        query: value,
         suggestions,
         infoText:''
       });
@@ -29,6 +30,7 @@ class CitySearch extends Component {
   handleItemClicked = (suggestion) => {
     this.setState({
       query: suggestion,
+      suggestions: [],
       showSuggestions: false,
       infoText:''
     });
