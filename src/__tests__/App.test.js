@@ -84,6 +84,16 @@ describe('<App /> integration', () => {
     AppWrapper.unmount();
   });
 
+  test("automatically render a default number of events", async () => {
+    const AppWrapper = mount(<App />);
+    const allEvents = await getEvents();
+    expect(AppWrapper.state("numberOfEvents")).not.toEqual(undefined);
+    const sliceNumber = AppWrapper.state("eventsLength");
+    //check if the events state is updated with the appropriate length after fetching
+    expect(AppWrapper.state("events")).toEqual(allEvents.slice(0, sliceNumber));
+    AppWrapper.unmount();
+  });
+
   test('update list of events to match new input of number of events', async () => {
     const AppWrapper = mount(<App />);
     const NumberOfEventsWrapper = AppWrapper.find(NumberOfEvents);
@@ -92,5 +102,5 @@ describe('<App /> integration', () => {
     await NumberOfEventsWrapper.find('.number-of-events input').simulate('change', eventObject);
     expect(AppWrapper.state('numberOfEvents')).toEqual(number);
     AppWrapper.unmount();
-});
+  });
 });
