@@ -43,7 +43,7 @@ class Event extends Component {
         </div>
 
         {showDetails && (
-          <div className="expanded-details">
+          <div className="event-expanded">
             <h3>About Event:</h3>
             <a href={event.htmlLink}
                target='_blank'

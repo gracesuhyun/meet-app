@@ -42,7 +42,7 @@ describe('<Event /> component', () => {
 
   test('render the event details', () => {
     EventWrapper.setState({ showDetails: true });
-    expect(EventWrapper.find('.expanded-details')).toHaveLength(1);
+    expect(EventWrapper.find('.event-expanded')).toHaveLength(1);
   });
 
   test('click hide details button to hide all event details', () => {
