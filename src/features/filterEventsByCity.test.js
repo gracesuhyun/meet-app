@@ -1,5 +1,4 @@
 import { loadFeature, defineFeature } from 'jest-cucumber';
-// import '@babel/preset-env';
 
 import React from 'react';
 import { mount, shallow } from 'enzyme';

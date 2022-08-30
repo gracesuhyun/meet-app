@@ -27,6 +27,7 @@ class NumberOfEvents extends Component {
 
         <label>Number of Events Per Page:</label>
         <input 
+          className="inputNumberOfEvents"
           type="number"
           value={this.state.numberOfEvents}
           onChange={this.handleInputChanged}
