@@ -34,7 +34,7 @@ class NumberOfEvents extends Component {
           onChange={this.handleInputChanged}
         />
 
-        <div className="info-alert">
+        <div className="error-alert">
         <ErrorAlert text={this.state.infoText} />
         </div>
 
