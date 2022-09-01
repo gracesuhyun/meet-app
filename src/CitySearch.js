@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { InfoAlert } from './Alert';
+
+import './CitySearch.css';
 
 class CitySearch extends Component {
   state = {
@@ -16,7 +19,7 @@ class CitySearch extends Component {
     if (suggestions.length === 0) {
       this.setState({
         query: value,
-        infoText: 'There are no available events in the city you are looking for.',
+        infoText: 'We can not find the city you are looking for. Please try another city.',
       });
     } else {
       return this.setState({
@@ -40,9 +43,17 @@ class CitySearch extends Component {
   render() {
     return (
       <div className='CitySearch'>
+
+        <h2>Search for events in a city:</h2>
+
+        <div className="info-alert">
+        <InfoAlert text={this.state.infoText} />
+        </div>
+
         <input
         type='text'
         className='city'
+        palceholder='Enter City Here'
         value={this.state.query}
         onChange={this.handleInputChanged}
         onFocus={() => { this.setState({ showSuggestions: true }) }}
