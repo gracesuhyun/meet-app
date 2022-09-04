@@ -61,13 +61,6 @@ const getEvents = async () => {
     return data?JSON.parse(data).events:[];;
   }
 
-  if (!navigator.onLine) {
-    const events = localStorage.getItem("lastEvents");
-    const parsedLocations = extractLocations(JSON.parse(events).events)
-    NProgress.done();
-    return parsedLocations;
-  }
-
   const token = await getAccessToken();
   if (token) {
     removeQuery();
