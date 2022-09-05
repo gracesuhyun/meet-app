@@ -4,6 +4,7 @@ import EventList from './EventList';
 import CitySearch from './CitySearch';
 import NumberOfEvents from './NumberOfEvents';
 import { getEvents, extractLocations } from './api';
+import { OfflineAlert } from './Alert';
 
 import './nprogress.css';
 
@@ -52,6 +53,7 @@ class App extends Component {
   }
   
   render() {
+    
     return (
       <div className="App"> 
         <CitySearch 
@@ -64,6 +66,7 @@ class App extends Component {
         
         <EventList 
           events={this.state.events} />
+        {!navigator.onLine && <OfflineAlert text={'You are now offline. Using data from previous login.'} />}
       </div>
     );
   }
