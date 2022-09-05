@@ -14,14 +14,15 @@ class App extends Component {
     events: [],
     locations: [],
     numberOfEvents: 20,
-    locationSelected: 'all',
     showWelcomeScreen: undefined
   }
 
   updateEvents = (location, eventCount) => {
     if (eventCount === undefined) {
       eventCount = this.state.numberOfEvents;
-    } 
+    } else(
+      this.setState({ numberOfEvents: eventCount })
+    )
     if (location === undefined) {
       location = this.state.locationSelected;
     }
@@ -43,20 +44,18 @@ class App extends Component {
 
     return (
       <div className="App"> 
-
-        {!navigator.onLine && <OfflineAlert text={'You are now offline. Using data from previous login.'} />}
-
         <CitySearch 
           locations={this.state.locations} 
           updateEvents={this.updateEvents} />
 
         <NumberOfEvents 
           events={this.state.events}
-          numberOfEvents={this.state.numberOfEvents}
           updateEvents={this.updateEvents} />
         
         <EventList 
           events={this.state.events} />
+
+        {!navigator.onLine && <OfflineAlert text={'You are now offline. Using data from previous login.'} />}
         
         <WelcomeScreen 
           showWelcomeScreen={this.state.showWelcomeScreen} 
@@ -71,13 +70,13 @@ class App extends Component {
     const accessToken = localStorage.getItem('access_token');
     const isTokenValid = (await checkToken(accessToken)).error ? false : true;
     const searchParams = new URLSearchParams(window.location.search);
-    const code = searchParams.get('code');
+    const code = searchParams.get("code");
 
     this.setState({ showWelcomeScreen: !(code || isTokenValid) });
     if ((code || isTokenValid) && this.mounted) {
       getEvents().then((events) => {
         if (this.mounted) {
-          this.setState({ events: events.slice(0, this.state.numberOfEvents), locations: extractLocations(events) });
+          this.setState({ events, locations: extractLocations(events) });
         }
       });
     }
