@@ -56,12 +56,13 @@ const getEvents = async () => {
   }
 
   if (!navigator.onLine) {
-    const data = localStorage.getItem("lastEvents");
+    const data = localStorage.getItem('lastEvents');
     NProgress.done();
     return data?JSON.parse(data).events:[];
   }
 
   const token = await getAccessToken();
+  console.log('getEvents token: ', token)
   if (token) {
     removeQuery();
     const url = `https://z3nxzdm1nh.execute-api.us-east-1.amazonaws.com/dev/api/get-events/${token}`;
@@ -72,7 +73,7 @@ const getEvents = async () => {
       localStorage.setItem('locations', JSON.stringify(locations));
     }
     NProgress.done();
-    return result.data.events;
+    return { events: result.data.events, locations };
   }
 };
 
