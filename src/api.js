@@ -23,9 +23,8 @@ const checkToken = async (accessToken) => {
     .then((res) => res.json())
     .catch((error) => error.json());
 
-    return result;
+    return result.error ? false : true;;
 };
-
 
 const extractLocations = (events) => {
   var extractLocations = events.map((event) => event.location);
@@ -50,7 +49,7 @@ const getEvents = async () => {
   const token = await getAccessToken();
   if (token) {
     removeQuery();
-    const url = `https://z3nxzdm1nh.execute-api.us-east-1.amazonaws.com/dev/api/get-events/${token}`;
+    const url = `https://z3nxzdm1nh.execute-api.us-east-1.amazonaws.com/dev/api/get-events/${token}/35`;
     const result = await axios.get(url);
     if (result.data) {
       var locations = extractLocations(result.data.events);
