@@ -40,16 +40,23 @@ const getEvents = async () => {
     return mockData;
   }
 
+  // if (!navigator.onLine) {
+  //   const data = localStorage.getItem('lastEvents');
+  //   NProgress.done();
+  //   return data?JSON.parse(data).events:[];
+  // }
+
   if (!navigator.onLine) {
-    const data = localStorage.getItem('lastEvents');
+    const { events } = await localStorage.getItem("lastEvents");
     NProgress.done();
-    return data?JSON.parse(data).events:[];
+    
+    return { events: JSON.parse(events), locations: extractLocations(events) };
   }
 
   const token = await getAccessToken();
   if (token) {
     removeQuery();
-    const url = `https://z3nxzdm1nh.execute-api.us-east-1.amazonaws.com/dev/api/get-events/${token}/35`;
+    const url = `https://z3nxzdm1nh.execute-api.us-east-1.amazonaws.com/dev/api/get-events/${token}`;
     const result = await axios.get(url);
     if (result.data) {
       var locations = extractLocations(result.data.events);
