@@ -13,30 +13,39 @@ class App extends Component {
   state = {
     events: [],
     locations: [],
+    currentLocation: 'all',
     numberOfEvents: 20,
     showWelcomeScreen: undefined
   }
 
   updateEvents = (location, eventCount) => {
-    if (eventCount === undefined) {
-      eventCount = this.state.numberOfEvents;
-    } else(
-      this.setState({ numberOfEvents: eventCount })
-    )
-    if (location === undefined) {
-      location = this.state.locationSelected;
-    }
-    getEvents().then((events) => {
-      const locationEvents = (location === 'all') 
-          ? events 
+    const { currentLocation, numberOfEvents } = this.state;
+    if (location) {
+      getEvents().then((events) => {
+        const locationEvents =
+          location === 'all'
+          ? events
           : events.filter((event) => event.location === location);
-      this.setState({
-          events: locationEvents.slice(0, eventCount),
-          numberOfEvents: eventCount,
-          locationSelected: location
+        const filteredEvents = locationEvents.slice(0, numberOfEvents);
+        this.setState({
+          events: filteredEvents,
+          currentLocation: location,
+        });
       });
-    });
-  }
+    } else {
+      getEvents().then((events) => {
+        const locationEvents =
+          currentLocation === 'all'
+          ? events
+          : events.filter((event) => event.location === currentLocation);
+        const filteredEvents = locationEvents.slice(0, eventCount);
+        this.setState({
+          events: filteredEvents,
+          numberOfEvents: eventCount,
+        });
+      });
+    }
+  };
   
   render() {
     if (this.state.showWelcomeScreen === undefined) 
@@ -53,7 +62,8 @@ class App extends Component {
           updateEvents={this.updateEvents} />
         
         <EventList 
-          events={this.state.events} />
+          events={this.state.events} 
+          updateEvents={this.updateEvents}/>
 
         {!navigator.onLine && <OfflineAlert text={'You are now offline. Using data from previous login.'} />}
         
