@@ -58,7 +58,7 @@ const getEvents = async () => {
     }
 
     NProgress.done();
-    return { events: result.data.events, locations };
+    return result.data.events;
   }
 };
 
