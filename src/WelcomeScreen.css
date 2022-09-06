@@ -6,7 +6,7 @@
     background: white;
 }
 
-.login-button {
+/* .login-button {
     color: #494949;
     text-transform: uppercase;
     text-decoration: none;
@@ -63,4 +63,10 @@
     width: 80%;
     height: 100%;
     text-align: center;
+} */
+
+.btn-text {
+    background-color: #4285f4;
+    color: #fff;
+    border: white;
 }
