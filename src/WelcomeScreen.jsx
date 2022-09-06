@@ -25,7 +25,7 @@ function WelcomeScreen(props) {
           </div>
         </div>
         <a
-        href="https://gracesuhyun.github.io/meet/privacy.html"
+        href="https://gracesuhyun.github.io/meet-app/privacy.html"
         rel="nofollow noopener"
         >
         Privacy policy
