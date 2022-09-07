@@ -22,6 +22,7 @@ const checkToken = async (accessToken) => {
   )
     .then((res) => res.json())
     .catch((error) => error.json());
+    console.log(accessToken);
 
     return result.error ? false : true;;
 };
