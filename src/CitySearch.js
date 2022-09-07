@@ -5,7 +5,6 @@ import './CitySearch.css';
 
 class CitySearch extends Component {
   state = {
-    locations: this.props.locations,
     query: '',
     suggestions: [],
     showSuggestions: false
@@ -72,7 +71,7 @@ class CitySearch extends Component {
         </li>
         ))}
 
-        <li key='all' onClick={() => this.handleItemClicked('all')}>
+        <li onClick={() => this.handleItemClicked('all')}>
           <b>See all cities</b>
         </li>
         
