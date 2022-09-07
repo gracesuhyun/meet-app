@@ -8,11 +8,12 @@ import reportWebVitals from './reportWebVitals';
 import * as atatus from 'atatus-spa';
 atatus.config('983dab5ca54b487e8684b23c111a238d').install();
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change
