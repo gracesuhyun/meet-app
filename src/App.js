@@ -16,38 +16,25 @@ class App extends Component {
   }
 
   updateEvents = (location, eventCount) => {
-    console.log('update events token valid: ', this.state.tokenCheck)
-    const { currentLocation, numberOfEvents } = this.state;
-    if (location) {
-      getEvents().then((response) => {
-        const locationEvents =
-          location === "all"
-            ? response.events
-            : response.events.filter((event) => event.location === location);
-        const events = locationEvents.slice(0, numberOfEvents);
-        return this.setState({
-          events: events,
-          currentLocation: location,
-          locations: response.locations,
-        });
-      });
-    } else {
-      getEvents().then((response) => {
-        const locationEvents =
-          currentLocation === "all"
-            ? response.events
-            : response.events.filter(
-                (event) => event.location === currentLocation
-              );
-        const events = locationEvents.slice(0, eventCount);
-        return this.setState({
-          events: events,
-          numberOfEvents: eventCount,
-          locations: response.locations,
-        });
-      });
+    if (eventCount === undefined) {
+      eventCount = this.state.numberOfEvents;
+    } else(
+      this.setState({ numberOfEvents: eventCount })
+    )
+    if (location === undefined) {
+      location = this.state.locationSelected;
     }
-  };
+    getEvents().then((events) => {
+      const locationEvents = (location === 'all') 
+          ? events 
+          : events.filter((event) => event.location === location);
+      this.setState({
+          events: locationEvents.slice(0, eventCount),
+          numberOfEvents: eventCount,
+          locationSelected: location
+      });
+    });
+  }
 
   async componentDidMount() {
     this.mounted = true;
