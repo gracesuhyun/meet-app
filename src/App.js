@@ -67,7 +67,6 @@ class App extends Component {
     return (
       
       <div className="App"> 
-      {!navigator.onLine && <OfflineAlert text={'You are now offline. Using data from previous login.'} />}
         <CitySearch 
           locations={this.state.locations} 
           updateEvents={this.updateEvents} />
@@ -75,6 +74,8 @@ class App extends Component {
         <NumberOfEvents 
           events={this.state.events}
           updateEvents={this.updateEvents} />
+
+        {!navigator.onLine && <OfflineAlert text={'You are now offline. Using data from previous login.'} />} 
         
         <EventList 
           events={this.state.events} />
