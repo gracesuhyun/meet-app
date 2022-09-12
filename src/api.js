@@ -17,15 +17,12 @@ const removeQuery = () => {
 };
 
 const checkToken = async (accessToken) => {
-  try {
-        const result = await fetch(
-            `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
-        );
-        console.log('result', result);
-        return await result.json();
-    } catch (error) {
-        error.json();
-    }
+  const result = await fetch(
+    `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
+  )
+    .then((res) => res.json())
+    .catch((error) => error.json());
+    return result.data.events;
 };
 
 const extractLocations = (events) => {
