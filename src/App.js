@@ -72,7 +72,7 @@ class App extends Component {
           updateEvents={this.updateEvents} />
 
         <NumberOfEvents 
-          numberOfEvents={this.state.numberOfEvents}
+          events={this.state.events}
           updateEvents={this.updateEvents} />
 
         {!navigator.onLine && <OfflineAlert text={'You are now offline. Using data from previous login.'} />} 
