@@ -14,7 +14,6 @@ class App extends Component {
     events: [],
     locations: [],
     numberOfEvents: 20,
-    tokenCheck: false,
     showWelcomeScreen: undefined,
   }
 
@@ -40,17 +39,21 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    const accessToken = localStorage.getItem("access_token");
-    const validToken = accessToken !== null  ? await checkToken(accessToken) : false;
-    this.setState({ tokenCheck: validToken });
-    if(validToken === true) this.updateEvents()
-    const searchParams = new URLSearchParams(window.location.search);
-    const code = searchParams.get("code");
-
     this.mounted = true;
-    if (code && this.mounted === true && validToken === false){ 
-      this.setState({tokenCheck:true });
-      this.updateEvents()
+    const accessToken = localStorage.getItem('access_token');
+    const isTokenValid = (await checkToken(accessToken)).error ? false:true;
+    const searchParams = new URLSearchParams(window.location.search);
+    const code = searchParams.get('code');
+    
+    this.setState({ showWelcomeScreen: !(code || isTokenValid) });
+    if ((code || isTokenValid) && this.mounted) {
+      getEvents().then((events) => {
+        if (this.mounted) {
+          this.setState({ 
+            events: events.slice(0, this.state.numberOfEvents), 
+            locations: extractLocations(events) });
+        }
+      });
     }
   }
 
