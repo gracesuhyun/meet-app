@@ -12,14 +12,14 @@ class NumberOfEvents extends Component {
       this.setState({
         numberOfEvents: newInput,
         infoText: 'Please choose a number between 1 and 35',
-      })
+      });
     } else {
+      this.props.updateEvents(undefined, newInput);
       this.setState({
         numberOfEvents: newInput,
         infoText: '',
-      })
+      });
     }
-        this.props.updateEvents(undefined, newInput);
   }
 
   render() {
