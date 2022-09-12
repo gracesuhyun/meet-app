@@ -22,7 +22,7 @@ const checkToken = async (accessToken) => {
   )
     .then((res) => res.json())
     .catch((error) => error.json());
-    return result.error ? false : true;
+    return result;
 };
 
 const extractLocations = (events) => {
