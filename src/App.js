@@ -14,6 +14,7 @@ class App extends Component {
     events: [],
     locations: [],
     numberOfEvents: 20,
+    tokenCheck: false,
     showWelcomeScreen: undefined,
   }
 
