@@ -40,23 +40,18 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    this.mounted = true;
-    getEvents().then((events) => {
-      const { numberOfEvents } = this.state;
-      if (this.mounted) {
-        const filteredEvents = events.slice(0, numberOfEvents);
-        this.setState({ 
-          events: filteredEvents,
-          locations: extractLocations(events),
-        });
-      }
+    const accessToken = localStorage.getItem("access_token");
+    const validToken = accessToken !== null  ? await checkToken(accessToken) : false;
+    this.setState({ tokenCheck: validToken });
+    if(validToken === true) this.updateEvents()
+    const searchParams = new URLSearchParams(window.location.search);
+    const code = searchParams.get("code");
 
-      if (!navigator.onLine) {
-        this.setState({
-          infoText: 'You are currently offline.  Using data from previous login.'
-        });
-      }
-    });
+    this.mounted = true;
+    if (code && this.mounted === true && validToken === false){ 
+      this.setState({tokenCheck:true });
+      this.updateEvents()
+    }
   }
 
   componentWillUnmount(){
@@ -69,10 +64,6 @@ class App extends Component {
     return (
       
       <div className="App"> 
-      <div className="offlineAlert">
-          <OfflineAlert text={this.state.infoText} />
-        </div>
-
         <CitySearch 
           locations={this.state.locations} 
           updateEvents={this.updateEvents} />
@@ -80,6 +71,8 @@ class App extends Component {
         <NumberOfEvents 
           events={this.state.events}
           updateEvents={this.updateEvents} />
+
+        {!navigator.onLine && <OfflineAlert text={'You are now offline. Using data from previous login.'} />} 
         
         <EventList 
           events={this.state.events} />
