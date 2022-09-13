@@ -8,7 +8,7 @@ import { getEvents, extractLocations, checkToken, getAccessToken } from './api';
 import { OfflineAlert } from './Alert';
 
 import {
-  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip
+  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
 
 import './nprogress.css';
@@ -77,7 +77,7 @@ class App extends Component {
   
   render() {
     if (this.state.showWelcomeScreen === undefined) return <div className="App" />
-    const { locations, numberOfEvents } = this.state;
+    const { locations, numberOfEvents, events } = this.state;
 
     return (
       
@@ -99,22 +99,23 @@ class App extends Component {
 
         {!navigator.onLine && <OfflineAlert text={'You are now offline. Using data from previous login.'} />} 
         
-        <ScatterChart
-          width={400}
-          height={400}
-          margin={{
-            top: 20, right: 20, bottom: 20, left: 20,
-          }}
-        >
-          <CartesianGrid />
-          <XAxis type="category" dataKey="city" name="city" />
-          <YAxis type="number" dataKey="number" name="number of events" allowDecimals={false} width={800}/>
-          <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-          <Scatter data={this.getData()} fill="#8884d8" />
-        </ScatterChart>
+        <ResponsiveContainer height={400} >
+        <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+            <CartesianGrid />
+            <XAxis type="category" dataKey="city" name="city" />
+            <YAxis
+              allowDecimals={false}
+              type="number"
+              dataKey="number"
+              name="number of events"
+            />
+            <Tooltip cursor={{ strokeDasharray: "3 3" }} />
+            <Scatter data={this.getData()} fill="#8884d8" />
+          </ScatterChart>
+        </ResponsiveContainer>
 
         <EventList 
-          events={this.state.events} />
+          events={events} />
 
         <WelcomeScreen 
           showWelcomeScreen={this.state.showWelcomeScreen}
