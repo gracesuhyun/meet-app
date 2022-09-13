@@ -89,7 +89,7 @@ class App extends Component {
         <CitySearch 
           locations={locations} 
           updateEvents={this.updateEvents} />
-
+        <br/>
         <NumberOfEvents 
           // events={this.state.events}
           numberOfEvents={numberOfEvents}
@@ -108,7 +108,7 @@ class App extends Component {
         >
           <CartesianGrid />
           <XAxis type="category" dataKey="city" name="city" />
-          <YAxis type="number" dataKey="number" name="number of events" allowDecimals={false}/>
+          <YAxis type="number" dataKey="number" name="number of events" allowDecimals={false} width={800}/>
           <Tooltip cursor={{ strokeDasharray: '3 3' }} />
           <Scatter data={this.getData()} fill="#8884d8" />
         </ScatterChart>
