@@ -44,7 +44,7 @@ class CitySearch extends Component {
     return (
       <div className='CitySearch'>
 
-        <h2>Search for events in a city:</h2>
+      <h4>Choose your nearest city</h4>
 
         <div className="info-alert">
         <InfoAlert text={this.state.infoText} />

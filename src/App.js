@@ -8,7 +8,8 @@ import { getEvents, extractLocations, checkToken, getAccessToken } from './api';
 import { OfflineAlert } from './Alert';
 
 import {
-  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
+  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie
 } from 'recharts';
 
 import './nprogress.css';
@@ -42,14 +43,24 @@ class App extends Component {
     });
   }
 
-  getData = () => {
-    const {locations, events} = this.state;
+  getScatterData = () => {
+    const { locations, events } = this.state;
     const data = locations.map((location)=>{
       const number = events.filter((event) => event.location === location).length
       const city = location.split(', ').shift()
       return {city, number};
     })
     return data;
+  }
+
+  getPieData = () => {
+    const { events } = this.state;
+    const genres = ['React', 'AngularJS', 'jQuery', 'Node', 'JavaScript']
+    const data = genres.map((genre)=>{
+      const value = events.filter((event) => event.summary.includes(genre)).length;
+      return { 'name': genre, value }; 
+    });
+    return data.filter(item => item.value > 0);
   }
 
   async componentDidMount() {
@@ -84,7 +95,6 @@ class App extends Component {
       <div className="App"> 
       
         <h1>Meet App</h1>
-        <h4>Choose your nearest city</h4>
 
         <CitySearch 
           locations={locations} 
@@ -95,25 +105,44 @@ class App extends Component {
           numberOfEvents={numberOfEvents}
           updateEvents={this.updateEvents} />
 
-        <h4>Events in each city</h4>
-
         {!navigator.onLine && <OfflineAlert text={'You are now offline. Using data from previous login.'} />} 
         
-        <ResponsiveContainer height={400} >
-        <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-            <CartesianGrid />
-            <XAxis type="category" dataKey="city" name="city" />
-            <YAxis
-              allowDecimals={false}
-              type="number"
-              dataKey="number"
-              name="number of events"
-            />
-            <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-            <Scatter data={this.getData()} fill="#8884d8" />
-          </ScatterChart>
-        </ResponsiveContainer>
+        <div className='pie-chart'>
+          <ResponsiveContainer>
+            <PieChart>
+              <Pie
+                data={this.getPieData()}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name }) => `${name}`}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+              >
+            </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
 
+        <div className='scatter-chart'>
+          <ResponsiveContainer height={400} >
+          <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+              <CartesianGrid />
+              <XAxis type="category" dataKey="city" name="city" />
+              <YAxis
+                allowDecimals={false}
+                type="number"
+                dataKey="number"
+                name="number of events"
+              />
+              <Tooltip cursor={{ strokeDasharray: "3 3" }} />
+              <Scatter data={this.getScatterData()} fill="#8884d8" />
+            </ScatterChart>
+          </ResponsiveContainer>
+        </div>
+
+        <h4>Events in each city</h4>
         <EventList 
           events={events} />
 
