@@ -100,15 +100,14 @@ class App extends Component {
           locations={locations} 
           updateEvents={this.updateEvents} />
         <br/>
-        <NumberOfEvents 
-          // events={this.state.events}
+        <NumberOfEvents
           numberOfEvents={numberOfEvents}
           updateEvents={this.updateEvents} />
 
         {!navigator.onLine && <OfflineAlert text={'You are now offline. Using data from previous login.'} />} 
         
         <div className='pie-chart'>
-          <ResponsiveContainer>
+          <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
                 data={this.getPieData()}

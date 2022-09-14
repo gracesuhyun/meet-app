@@ -8,10 +8,10 @@ class NumberOfEvents extends Component {
 
   handleInputChanged = (event) => {
     let newInput = parseInt(event.target.value);
-    if ((newInput > 35) || (newInput < 1)) {
+    if ((newInput > 50) || (newInput < 1)) {
       this.setState({
         numberOfEvents: newInput,
-        infoText: 'Please choose a number between 1 and 35',
+        infoText: 'Please choose a number between 1 and 50',
       });
     } else {
       this.props.updateEvents(undefined, newInput);
@@ -27,7 +27,6 @@ class NumberOfEvents extends Component {
       <div className="number-of-events">
 
         <h4>Number of Events Per Page:</h4>
-        <br/>
         <input 
           className="inputNumberOfEvents"
           type="number"
