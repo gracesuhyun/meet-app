@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 
 const EventGenre = ({ events }) => {
+
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -10,9 +11,8 @@ const EventGenre = ({ events }) => {
 
   const getPieData = () => {
     const genres = ['React', 'JavaScript', 'Node', 'jQuery', 'AngularJS'];
-    const data = genres.map((genre) => {
-      const value = events.filter(({ summary }) =>
-        summary.split(' ').includes(genre)).length;
+    const data = genres.map(genre => {
+      const value = events.filter(event => event.summary.split(' ').includes(genre)).length;
       return { name: genre, value };
     });
     return data;
@@ -21,8 +21,8 @@ const EventGenre = ({ events }) => {
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#85D2DB'];
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
-    <PieChart>
+    <ResponsiveContainer height={400}>
+    <PieChart width={400} height={400}>
       <Pie
         data={data}
         cx="50%"
@@ -37,6 +37,11 @@ const EventGenre = ({ events }) => {
           data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} name={entry.name}/>)
         }
     </Pie>
+    <Legend 
+          verticalAlign="top" 
+          // align="center"
+          iconType="line"
+          />
     </PieChart>
   </ResponsiveContainer>
   );
