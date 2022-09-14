@@ -4,12 +4,12 @@ import EventList from './EventList';
 import CitySearch from './CitySearch';
 import NumberOfEvents from './NumberOfEvents';
 import WelcomeScreen from './WelcomeScreen';
+import EventGenre from './EventGenre.js';
 import { getEvents, extractLocations, checkToken, getAccessToken } from './api';
 import { OfflineAlert } from './Alert';
 
 import {
-  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie
+  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
 
 import './nprogress.css';
@@ -53,16 +53,6 @@ class App extends Component {
     return data;
   }
 
-  getPieData = () => {
-    const { events } = this.state;
-    const genres = ['React', 'AngularJS', 'jQuery', 'Node', 'JavaScript']
-    const data = genres.map((genre)=>{
-      const value = events.filter((event) => event.summary.includes(genre)).length;
-      return { 'name': genre, value }; 
-    });
-    return data.filter(item => item.value > 0);
-  }
-
   async componentDidMount() {
     this.mounted = true;
     const accessToken = localStorage.getItem('access_token');
@@ -96,6 +86,8 @@ class App extends Component {
       
         <h1>Meet App</h1>
 
+        {!navigator.onLine && <OfflineAlert text={'You are now offline. Using data from previous login.'} />} 
+
         <CitySearch 
           locations={locations} 
           updateEvents={this.updateEvents} />
@@ -103,30 +95,12 @@ class App extends Component {
         <NumberOfEvents
           numberOfEvents={numberOfEvents}
           updateEvents={this.updateEvents} />
+        <br/>
 
-        {!navigator.onLine && <OfflineAlert text={'You are now offline. Using data from previous login.'} />} 
-        
-        <div className='pie-chart'>
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={this.getPieData()}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name }) => `${name}`}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-            </Pie>
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className='scatter-chart'>
+        <div className='data-vis-wrapper'>
+          <EventGenre events={events} />
           <ResponsiveContainer height={400} >
-          <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+            <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
               <CartesianGrid />
               <XAxis type="category" dataKey="city" name="city" />
               <YAxis
