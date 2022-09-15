@@ -7,7 +7,9 @@ const EventGenre = ({ events }) => {
 
   useEffect(() => {
     setData(() => getPieData());
-  }, [events]);
+  },
+    [events]
+  );
 
   const getPieData = () => {
     const genres = ['React', 'JavaScript', 'Node', 'jQuery', 'AngularJS'];
