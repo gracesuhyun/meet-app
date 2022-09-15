@@ -9,7 +9,7 @@ import { getEvents, extractLocations, checkToken, getAccessToken } from './api';
 import { OfflineAlert } from './Alert';
 
 import {
-  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
+  ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer
 } from 'recharts';
 
 import './nprogress.css';
@@ -110,7 +110,6 @@ class App extends Component {
                 dataKey='number'
                 name='number of events'
               />
-              <Tooltip cursor={{ strokeDasharray: '3 3' }} />
               <Scatter data={this.getScatterData()} fill='#8884d8' />
             </ScatterChart>
           </ResponsiveContainer>
